@@ -48,9 +48,10 @@ class Svg(object):
         with open(self.file) as svg:
             for line in svg:
                 if line.startswith('<svg'):
-                    paramdict = {e.split('="')[0]: e.split('="')[1] for e in line[5:-2].split('" ')}
+                    paramdict = {e.split('="')[0]: e.split('="')[1] for e in line[5:-3].split('" ')}
                     break
-        return int(paramdict["width"].replace('pt', '')), int(paramdict["height"].replace('pt', ''))
+        return (round(float(paramdict["width"].replace('pt', ''))),
+                round(float(paramdict["height"].replace('pt', ''))))
 
     def save(self, newname):
         fig = sg.SVGFigure(self.width, self.height)
