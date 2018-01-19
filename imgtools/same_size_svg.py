@@ -1,4 +1,4 @@
-from svg import Svg
+from imgtools.svg import Svg
 from argparse import ArgumentParser
 
 
