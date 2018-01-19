@@ -7,14 +7,14 @@ def main():
     svgs = [Svg(f) for f in args.images]
 
     if args.direction == "largest":
-        desired_size = max([i.__dict___[args.dimension] for i in svgs])
+        desired_size = max([i.__dict__[args.dimension] for i in svgs])
     else:
-        desired_size = min([i.__dict___[args.dimension] for i in svgs])
+        desired_size = min([i.__dict__[args.dimension] for i in svgs])
 
     if args.dimension == "width":
-        svgs = [i.scale_width_to_reference(desired_size) for i in svgs]
+        [i.scale_width_to_reference(desired_size) for i in svgs]
     else:
-        svgs = [i.scale_height_to_reference(desired_size) for i in svgs]
+        [i.scale_height_to_reference(desired_size) for i in svgs]
     save_all(svgs)
 
 
