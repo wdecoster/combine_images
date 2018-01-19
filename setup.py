@@ -5,7 +5,7 @@ from codecs import open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
-exec(open('nanocomp/version.py').read())
+exec(open('imgtools/version.py').read())
 
 setup(
     name='imgtools',
@@ -27,15 +27,9 @@ setup(
         'Programming Language :: Python :: 3.5',
     ],
     keywords='nanopore sequencing plotting quality control',
-    packages=find_packages() + ['scripts'],
+    packages=find_packages(),
     python_requires='>=3',
-    install_requires=['pandas',
-                      'numpy',
-                      'nanoplotter>=0.31.0',
-                      'nanoget>=1.2.2',
-                      'nanomath>=0.15.3',
-                      'NanoPlot>=0.19.1'
-                      ],
+    install_requires=['svgutils'],
     package_data={'imgtools': []},
     package_dir={'imgtools': 'imgtools'},
     include_package_data=True,
