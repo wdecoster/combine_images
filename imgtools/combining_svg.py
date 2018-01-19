@@ -2,47 +2,8 @@
 based on https://neuroscience.telenczuk.pl/?p=331
 """
 
+from svg import Svg
 import svgutils.transform as sg
-
-
-class Svg(object):
-    "svg files with a data object (the svg), width, height and coordinates"
-
-    def __init__(self, data, dim, coords):
-        self.data = data
-        self.width = dim[0]
-        self.height = dim[1]
-        self.x = coords[0]
-        self.y = coords[1]
-
-    def scale_width_to_reference(self, reference_width):
-        """Proportionally scale the image to a given width."""
-        scalings_factor = reference_width / self.width
-        self.data.moveto(0, 0, scale=scalings_factor)
-        self.width = self.width * scalings_factor
-        self.height = self.height * scalings_factor
-
-    def scale_by_factor(self, scalings_factor):
-        """Proportionally scale image by a scaling factor."""
-        self.data.moveto(0, 0, scale=scalings_factor)
-        self.width = self.width * scalings_factor
-        self.height = self.height * scalings_factor
-
-    def move(self, x, y):
-        """Move the coordinates of an image."""
-        self.data.moveto(x, y)
-        self.x = x
-        self.y = y
-
-
-def get_size(svg_file):
-    """Naively parse the svg text file to get the width and height."""
-    with open(svg_file) as svg:
-        for line in svg:
-            if line.startswith('<svg'):
-                paramdict = {e.split('="')[0]: e.split('="')[1] for e in line[5:-2].split('" ')}
-                break
-    return int(paramdict["width"].replace('pt', '')), int(paramdict["height"].replace('pt', ''))
 
 
 def rescale(svgs):
@@ -77,8 +38,8 @@ def change_positions(svgs):
 
 def letter_annotations(svgs):
     """Add letters based on the location of the images."""
-    return [sg.TextElement(value.x + 10, value.y + 15, key, size=15, weight="bold")
-            for key, value in svgs.items()]
+    return [sg.TextElement(svg.x + 10, svg.y + 15, letter_annotation, size=15, weight="bold")
+            for letter_annotation, svg in svgs.items()]
 
 
 def files_to_svg_dict(files):
@@ -89,8 +50,7 @@ def files_to_svg_dict(files):
     """
     return {
         s.split('.')[0]: Svg(
-            data=sg.fromfile(s).getroot(),
-            dim=get_size(s),
+            file=s,
             coords=(0, 0))
         for s in files}
 
