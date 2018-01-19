@@ -5,12 +5,7 @@ from argparse import ArgumentParser
 def main():
     args = get_args()
     svgs = [Svg(f) for f in args.images]
-
-    if args.direction == "largest":
-        desired_size = max([i.__dict__[args.dimension] for i in svgs])
-    else:
-        desired_size = min([i.__dict__[args.dimension] for i in svgs])
-
+    desired_size = min([i.__dict__[args.dimension] for i in svgs])
     if args.dimension == "width":
         [i.scale_width_to_reference(desired_size) for i in svgs]
     else:
@@ -31,14 +26,10 @@ def get_args():
                          nargs='+',
                          metavar="files",
                          required=True)
-    general.add_argument("--dimension",
+    general.add_argument("-d", "--dimension",
                          choices=['width', 'height'],
                          help="Which dimension to use.",
                          default='width')
-    general.add_argument("--direction",
-                         choices=['largest', 'smallest'],
-                         help="Make image the same size as the largest or the smallest.",
-                         default='smallest')
     return parser.parse_args()
 
 
